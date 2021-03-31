@@ -10,6 +10,9 @@ services:
       # ถ้าไฟล์ในเครื่องเราเปลี่ยนแปลงใน container ก็จะเปลี่ยนแปลงตามครับ
       - ./:/var/www/laravel
       - ./uploads.ini:/usr/local/etc/php/conf.d/php.ini
+    cpus: 1
+    mem_limit: 4gb
+   
 
   # Web Server สำหรับการสร้าง nginx container
   nginx:
@@ -18,8 +21,9 @@ services:
     volumes_from:
       - php # คือการ volume จาก php container นะครับ
     ports:
-      - 8000:80 # port ที่เราต้องการจะใช้ระหว่าง {host}:{container} นะครับ
+      - 8081:80 # port ที่เราต้องการจะใช้ระหว่าง {host}:{container} นะครับ
       - 433:433
+    
 
   # Database คือ mysql container ครับ เพื่อที่จะทำเป็น database
   database:
@@ -36,6 +40,8 @@ services:
       - MYSQL_ROOT_PASSWORD=root # password สำหรับ root database หากต้องการ
     ports:
       - 3306:3306 # port ที่เราต้องการจะใช้ระหว่าง {host}:{container} นะครับ
+    cpus: 1
+    mem_limit: 4gb
 
   composer: # เป็น container สำหรับการรัน install package laravel ที่จะสั่งรันครั้งเดียวแล้วหยุดรัน container ไป
     build: ./docker-php # ใช้ dockerfile เดียวกันกับ container php
@@ -43,6 +49,7 @@ services:
     volumes_from:
       - php
     command: "composer install" # คำสั่ง สำหรับ install package
+   
 
 
   # Phpmyadmin (optional) อันนี้เพิ่มเติม หากว่าเราต้องการที่จะ explore database อันนี้ขี้เกียจอธิบายละ 5555
@@ -58,3 +65,5 @@ services:
     restart: always
     depends_on:
         - database
+    cpus: 1
+    mem_limit: 4gb
