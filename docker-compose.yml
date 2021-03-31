@@ -9,6 +9,7 @@ services:
       # เป็น volume ไฟล์ จากเครื่องเราไปยัง container จะเป็นการเชื่อมต่อกันแบบ
       # ถ้าไฟล์ในเครื่องเราเปลี่ยนแปลงใน container ก็จะเปลี่ยนแปลงตามครับ
       - ./:/var/www/laravel
+      - ./uploads.ini:/usr/local/etc/php/conf.d/php.ini
 
   # Web Server สำหรับการสร้าง nginx container
   nginx:
