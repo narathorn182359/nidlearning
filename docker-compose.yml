@@ -17,7 +17,7 @@ services:
     volumes_from:
       - php # คือการ volume จาก php container นะครับ
     ports:
-      - 8081:80 # port ที่เราต้องการจะใช้ระหว่าง {host}:{container} นะครับ
+      - 8000:80 # port ที่เราต้องการจะใช้ระหว่าง {host}:{container} นะครับ
       - 433:433
 
   # Database คือ mysql container ครับ เพื่อที่จะทำเป็น database
