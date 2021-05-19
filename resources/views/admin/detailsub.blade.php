@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">อัพโหลดข้อสอบ</label>
-                                    <input type="file" name="file" id="file" required>
+                                    <input type="file" name="file" id="file" >
             </div>
         </div>
     </div>
@@ -107,6 +107,6 @@
             filebrowserUploadMethod: 'form'
         });
   </script>
- <script src="{{ asset('js/subject_detail.js') }}"></script>
+ <script src="{{ asset('js/subject_detail.js?v=1') }}"></script>
 
 @endsection

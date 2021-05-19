@@ -37,7 +37,7 @@ $(document).ready(function () {
         $("#form-detailsub").trigger("reset");
         $('#id_sub').val(id);   
         $("#id_se").val(0);
-        $("#file").attr("required", true);
+   
         CKEDITOR.instances['editor1'].setData('');
     })
 
@@ -46,6 +46,7 @@ $(document).ready(function () {
         var id_se = $(this).data("id");
         var  url_geteditsexa = $('#url_geteditsexa').val();
         $.get( url_geteditsexa+ "/" + id_se, function (data) {
+            //CKEDITOR.instances['editor1'].setData("");
            // $('#summernote').summernote('reset');
             $("#modal-detailsub").modal("show");
             $("#headdetailsub").html("แก้ไข");

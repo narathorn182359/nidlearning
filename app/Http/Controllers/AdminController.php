@@ -328,98 +328,111 @@ class AdminController extends Controller
         
         
         if($request->id_se == '0'){
-            $path = $request->file('file')->getRealPath();
-            $data = Excel::load($path)->get();
-            $lastid = 0;
-            if($data->count()> 0){
-                foreach ($data as $key => $value) {
-                        $expre_count =  DB::table('subject_examination')
-                        ->where('id_sexa',$lastid)
-                        ->count();
-                            if( $expre_count > 0){
-                                $expre_first =  DB::table('subject_examination')
-                                ->where('id_sexa',$lastid)
-                                ->first();
-                                $exam_array = array(
-                                    'section'=>$value->question,
-                                    'select' => array( array(
-                                        'id' => '1',
-                                        'a'=>$value->answer_1,
-                                    ),  array(
-                                        'id' => '2',
-                                        'a'=>$value->answer_2,
-                                    ),  array(
-                                        'id' => '3',
-                                        'a'=>$value->answer_3,
-                                    ),  array(
-                                        'id' => '4',
-                                        'a'=>$value->answer_4,
-                                    ) ),
-                                    'answer'=>$value->answer_pass,
-                                    'active'=>$request->active,
-                                    'e_status'=>$value->e_status,
-                                    'created_at'=>Carbon::now(),
-                                    'updated_at'=>Carbon::now()
-                                  );
-                  
-                                   $exam_endcode = json_decode($expre_first->json_sub);
-                                  
-                                   array_push($exam_endcode,$exam_array);
-                                  $exam_json = json_encode($exam_endcode);
+           
+            if($request->file){
+                $path = $request->file('file')->getRealPath();
+                $data = Excel::load($path)->get();
+                $lastid = 0;
+                if($data->count()> 0){
+                    foreach ($data as $key => $value) {
+                            $expre_count =  DB::table('subject_examination')
+                            ->where('id_sexa',$lastid)
+                            ->count();
+                                if( $expre_count > 0){
+                                    $expre_first =  DB::table('subject_examination')
+                                    ->where('id_sexa',$lastid)
+                                    ->first();
+                                    $exam_array = array(
+                                        'section'=>$value->question,
+                                        'select' => array( array(
+                                            'id' => '1',
+                                            'a'=>$value->answer_1,
+                                        ),  array(
+                                            'id' => '2',
+                                            'a'=>$value->answer_2,
+                                        ),  array(
+                                            'id' => '3',
+                                            'a'=>$value->answer_3,
+                                        ),  array(
+                                            'id' => '4',
+                                            'a'=>$value->answer_4,
+                                        ) ),
+                                        'answer'=>$value->answer_pass,
+                                        'active'=>$request->active,
+                                        'e_status'=>$value->e_status,
+                                        'created_at'=>Carbon::now(),
+                                        'updated_at'=>Carbon::now()
+                                      );
+                      
+                                       $exam_endcode = json_decode($expre_first->json_sub);
+                                      
+                                       array_push($exam_endcode,$exam_array);
+                                      $exam_json = json_encode($exam_endcode);
+                                     
+                                    DB::table('subject_examination')
+                                    ->where('id_sexa',$lastid)
+                                    ->update([
+                                        'id_sub' => $request->id_sub,
+                                        'json_sub' =>  $exam_json,
+                                        'detail_sub' => $request->detail_sub,
+                                        'updated_by'=>  Auth::user()->username,
+                                        'updated_at'=>  Carbon::now(),
+                                    ]);
+                      
                                  
-                                DB::table('subject_examination')
-                                ->where('id_sexa',$lastid)
-                                ->update([
-                                    'id_sub' => $request->id_sub,
-                                    'json_sub' =>  $exam_json,
-                                    'detail_sub' => $request->detail_sub,
-                                    'updated_by'=>  Auth::user()->username,
-                                    'updated_at'=>  Carbon::now(),
-                                ]);
-                  
-                             
-                  
-                  
-                            }else{
-                  
-                                $exam_array = array(
-                                    'section'=>$value->question,
-                                    'select' => array( array(
-                                        'id' => '1',
-                                        'a'=>$value->answer_1,
-                                    ),  array(
-                                        'id' => '2',
-                                        'a'=>$value->answer_2,
-                                    ),  array(
-                                        'id' => '3',
-                                        'a'=>$value->answer_3,
-                                    ),  array(
-                                        'id' => '4',
-                                        'a'=>$value->answer_4,
-                                    ) ),
-                                    'answer'=>$value->answer_pass,
-                                    'active'=>$request->active,
-                                    'e_status'=>$value->e_status,
-                                    'created_at'=>Carbon::now(),
-                                    'updated_at'=>Carbon::now()
-                                  );
-                                  $data_b[]  = $exam_array;
-                                $exam_json = json_encode($data_b);
-                                
-                            $lastid  =  DB::table('subject_examination')
-                                ->insertGetId([
-                                    'id_sub' => $request->id_sub,
-                                    'name_title' => $request->name_title,
-                                    'json_sub' =>  $exam_json,
-                                    'detail_sub' => $request->detail_sub,
-                                    'created_by'=>  Auth::user()->username,
-                                    'created_at'=>  Carbon::now(),
-                                ]);
-                            }
-                       }
-    
-    
-                }
+                      
+                      
+                                }else{
+                      
+                                    $exam_array = array(
+                                        'section'=>$value->question,
+                                        'select' => array( array(
+                                            'id' => '1',
+                                            'a'=>$value->answer_1,
+                                        ),  array(
+                                            'id' => '2',
+                                            'a'=>$value->answer_2,
+                                        ),  array(
+                                            'id' => '3',
+                                            'a'=>$value->answer_3,
+                                        ),  array(
+                                            'id' => '4',
+                                            'a'=>$value->answer_4,
+                                        ) ),
+                                        'answer'=>$value->answer_pass,
+                                        'active'=>$request->active,
+                                        'e_status'=>$value->e_status,
+                                        'created_at'=>Carbon::now(),
+                                        'updated_at'=>Carbon::now()
+                                      );
+                                      $data_b[]  = $exam_array;
+                                    $exam_json = json_encode($data_b);
+                                    
+                                $lastid  =  DB::table('subject_examination')
+                                    ->insertGetId([
+                                        'id_sub' => $request->id_sub,
+                                        'name_title' => $request->name_title,
+                                        'json_sub' =>  $exam_json,
+                                        'detail_sub' => $request->detail_sub,
+                                        'created_by'=>  Auth::user()->username,
+                                        'created_at'=>  Carbon::now(),
+                                    ]);
+                                }
+                           }
+        
+        
+                    }
+            }else{
+                $lastid  =  DB::table('subject_examination')
+                    ->insertGetId([
+                        'id_sub' => $request->id_sub,
+                        'name_title' => $request->name_title,
+                        'detail_sub' => $request->detail_sub,
+                        'created_by'=>  Auth::user()->username,
+                        'created_at'=>  Carbon::now(),
+                    ]);
+            }
+          
             
             
         }else{
