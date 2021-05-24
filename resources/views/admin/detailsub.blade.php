@@ -107,6 +107,6 @@
             filebrowserUploadMethod: 'form'
         });
   </script>
- <script src="{{ asset('js/subject_detail.js?v=1') }}"></script>
+ <script src="{{ asset('js/subject_detail.js?v=2') }}"></script>
 
 @endsection

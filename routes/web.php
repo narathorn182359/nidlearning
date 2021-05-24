@@ -123,6 +123,8 @@ Route::post('/savecategory', 'CategoryController@savecategory')->name('savecateg
 Route::post('/deletecategory', 'CategoryController@deletecategory')->name('deletecategory');
 Route::get('/geteditcategory/{id}', 'CategoryController@geteditcategory')->name('geteditcategory');
 
+
+Route::post('/deletesubjectdetail', 'AdminController@deletesubjectdetail')->name('deletesubjectdetail');
 Route::post('/datacourse', 'CourseController@datacourse')->name('datacourse');
 Route::post('/deletecourse', 'CourseController@deletecourse')->name('deletecourse');
 Route::post('/savecourse', 'CourseController@savecourse')->name('savecourse');

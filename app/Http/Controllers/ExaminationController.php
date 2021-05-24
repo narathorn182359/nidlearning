@@ -705,6 +705,7 @@ class ExaminationController extends Controller
       public function geteditsexa($id){
 
         $data =  DB::table('subject_examination')
+        ->where('id_sexa',$id)
         ->first();
 
         return  response()->json($data);

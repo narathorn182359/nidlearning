@@ -127,7 +127,7 @@
   <input type="hidden" name="url_delete_video" id="url_delete_video" value="{{url('delete_video')}}">
   <input type="hidden" name="url_getsubject" id="url_getsubject" value="{{url('getsubject')}}">
   <input type="hidden" name="url_datauser" id="url_datauser" value="{{url('datauser')}}">
-  
+  <input type="hidden" name="url_deletesubjectdetail" id="url_deletesubjectdetail" value="{{url('deletesubjectdetail')}}">
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-dark navbar-navy">

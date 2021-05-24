@@ -443,11 +443,13 @@ class AdminController extends Controller
               
                 $lastid = $request->id_se;
                 if($data->count()> 0){
-                
+           
                     foreach ($data as $key => $value) {
+                     
                             $expre_count =  DB::table('subject_examination')
                             ->where('id_sexa',$lastid)
                             ->count();
+                         
                                 if( $expre_count > 0){
                                     $expre_first =  DB::table('subject_examination')
                                     ->where('id_sexa',$lastid)
@@ -474,21 +476,41 @@ class AdminController extends Controller
                                         'updated_at'=>Carbon::now()
                                       );
                       
-                                       $exam_endcode = json_decode($expre_first->json_sub);
-                                      
-                                       array_push($exam_endcode,$exam_array);
-                                      $exam_json = json_encode($exam_endcode);
+                                      if($expre_first->json_sub != null){
+                                        $exam_endcode = json_decode($expre_first->json_sub);
                                      
-                                    DB::table('subject_examination')
-                                    ->where('id_sexa',$lastid)
-                                    ->update([
-                                        'id_sub' => $request->id_sub,
-                                        'name_title' => $request->name_title,
-                                        'json_sub' =>  $exam_json,
-                                        'detail_sub' => $request->detail_sub,
-                                        'updated_by'=>  Auth::user()->username,
-                                        'updated_at'=>  Carbon::now(),
-                                    ]);
+                                         array_push($exam_endcode,$exam_array);
+  
+                                        $exam_json = json_encode($exam_endcode);
+                                       
+                                      DB::table('subject_examination')
+                                      ->where('id_sexa',$lastid)
+                                      ->update([
+                                          'id_sub' => $request->id_sub,
+                                          'name_title' => $request->name_title,
+                                          'json_sub' =>  $exam_json,
+                                          'detail_sub' => $request->detail_sub,
+                                          'updated_by'=>  Auth::user()->username,
+                                          'updated_at'=>  Carbon::now(),
+                                      ]);
+                                      }else{
+
+                                        $exam_endcode =[];
+                                        array_push($exam_endcode,$exam_array);
+  
+                                        $exam_json = json_encode($exam_endcode);
+                                        DB::table('subject_examination')
+                                        ->where('id_sexa',$lastid)
+                                        ->update([
+                                            'id_sub' => $request->id_sub,
+                                            'name_title' => $request->name_title,
+                                            'json_sub' =>  $exam_json,
+                                            'detail_sub' => $request->detail_sub,
+                                            'updated_by'=>  Auth::user()->username,
+                                            'updated_at'=>  Carbon::now(),
+                                        ]);
+                                      }
+                                      
                       
                                  
                       
@@ -555,7 +577,11 @@ class AdminController extends Controller
         return response()->json('200');
      }
 
+     public  function deletesubjectdetail(Request $request){
 
+        DB::table('subject_examination')->where("id_sexa",$request->id)->delete();
+        return response()->json('200');
+     }
     
 
 
